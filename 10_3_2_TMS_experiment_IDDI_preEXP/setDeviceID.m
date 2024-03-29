@@ -2,7 +2,7 @@ function deviceID=setDeviceID(mode)
 InitializePsychSound;
 device = PsychPortAudio('GetDevices') ;
     if isequal(mode,'subject')
-        deviceID=2;%3;%9;%4;%21;%5
+        deviceID=4;%3;%9;%4;%21;%5
     elseif isequal(mode,'experimenter')
         deviceID=3;%9;%4;%21;
     end

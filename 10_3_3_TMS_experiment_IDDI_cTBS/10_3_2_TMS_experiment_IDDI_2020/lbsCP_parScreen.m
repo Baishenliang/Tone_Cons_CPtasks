@@ -451,11 +451,11 @@ end
 % PsychPortAudio('FillBuffer',soundBuffer{1,end}, [adjust_k(1)*noise_bg'/adjust_noise_k;adjust_k(2)*noise_bg'/adjust_noise_k]);
 
 % BSLiang 20201025 增加了online打TMS的部分，这个把线拔掉也没问题，但是也可以block掉
-global ioObj address
-ioObj = io64;
-address = hex2dec('3FF8');          %standard LPT1 output port address（资源管理器→端口（COM和LPT）→属性→资源→I/O范围）
-status = io64(ioObj);
-io64(ioObj,address,0);
+% global ioObj address  %20240328
+% ioObj = io64;
+% address = hex2dec('3FF8');          %standard LPT1 output port address（资源管理器→端口（COM和LPT）→属性→资源→I/O范围）
+% status = io64(ioObj);
+% io64(ioObj,address,0);
 
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
@@ -635,10 +635,10 @@ disp('================================================================');
 global soundBuffer currentstep
 %等待一秒钟之后，就开！始！放！声！音！啦！
 pause(1);
-io64(ioObj,address,0);
+% io64(ioObj,address,0); % 20240328
 PsychPortAudio('Start',soundBuffer{1,currentstep(direction)},1,0);
 pause(0.5);
-io64(ioObj,address,0);
+% io64(ioObj,address,0); % 20240328
 PsychPortAudio('Stop',soundBuffer{1,currentstep(direction)});
 WaitSecs(1.4+(1.6-1.4)*rand(1,1)-0.5); %BSLiang 20201025, 由于硬件的限制，TMS立刻开始下一个trial的刺激，所以要等够1.4s(1.4s到1.6s的jitter）
 
@@ -657,7 +657,7 @@ elseif measure_type(1)==2
     direction=Randi(2); % Randomly select one direction
 end
 global soundBuffer currentstep par_keyboard zKey mKey %output_latency
-io64(ioObj,address,0);
+% io64(ioObj,address,0); % 20240328
 PsychPortAudio('Start',soundBuffer{1,currentstep(direction)},1,0);%开始播放声音
 %handles.figure_Screen
 tStart = GetSecs;
@@ -699,7 +699,7 @@ while 1
         break;
     end
 end
-io64(ioObj,address,0);
+% io64(ioObj,address,0); %20240328
 PsychPortAudio('Stop',soundBuffer{1,currentstep(direction)});
 
 
