@@ -183,7 +183,7 @@ function lbsCP2_start_withinCOND(par_code_in,session,w_subj_cond_i,turn_index,TM
     disp(['staircase_id_dis = ', num2str(staircase_id_dis)]);
     
     
-    istest=0; %=1: 调试，不进入主程序
+    istest=1; %=1: 调试，不进入主程序
     if ~istest
         for rep_step=1:rep_step_num
         

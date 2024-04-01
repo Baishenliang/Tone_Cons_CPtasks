@@ -6,7 +6,7 @@ function lbsCP2_TMSEXP_20201022(par,turn,TMSinten)
     % TMSinten: intensity of TMS stimulation
     
     is_test_turns=0; % 1时不进行练习也不开始实验
-    skip_practice=0; % 1时跳过练习
+    skip_practice=1; % 1时跳过练习
     
     %% 导入数据，确定turn以及block的顺序
     DATA=lbsCP2_loadDATA();
@@ -29,107 +29,74 @@ function lbsCP2_TMSEXP_20201022(par,turn,TMSinten)
         end
     end
 
-    %% 确定turn及标清楚刺激半球和序列
+    %% 确定turn
 %   stimSITE   NUMBER
-%   Left iTBS    1
-%   Left cTBS    2
-%   Right iTBS   3
-%   Right cTBS   4
-%   Sham         5 
+%   40Hz tACS	1
+%   4Hz tACS	2
+%   Sham	3
 
     turn_index=0;
 %       Left iTBS (LI)、Left cTBS (LC)、Right iTBS（RI）、Right cTBS（RC）、Sham )
-    if isequal(turn_Tag,'LI')
+    if isequal(turn_Tag,'40Hz tACS')
         turn_index=1;
-        tms_MSG='Left iTBS';
-    elseif isequal(turn_Tag,'LC')
+        tms_MSG='40Hz tACS';
+    elseif isequal(turn_Tag,'4Hz tACS')
         turn_index=2;
-        tms_MSG='Left cTBS';          
-    elseif isequal(turn_Tag,'RI')
-        turn_index=3;
-        tms_MSG='Right iTBS';
-    elseif isequal(turn_Tag,'RC')
-        turn_index=4;
-        tms_MSG='Right cTBS';
+        tms_MSG='4Hz tACS'; 
     elseif isequal(turn_Tag,'Sham')
-        turn_index=5;
+        turn_index=3;
         tms_MSG=counterShams{bsliang_gainORDERnum(par)};
     end
     
-    %% 确定刺激部位
+    %% 确定反应手
     ordercode=bsliang_gainORDERnum(par);
     if ordercode <=par_max/2
-        Larynx_Tongue='Larynx';
+        resp_hand=1; % Left hand
     else
-        Larynx_Tongue='Tongue';
-    end
-
-    %% 确定反应手
-    
-    %   stimSITE   NUMBER
-    %   Left iTBS    1
-    %   Left cTBS    2
-    %   Right iTBS   3
-    %   Right cTBS   4
-    %   Sham         5 
-    
-    %  2 < turn_index <= 4 时，被试右手反应
-    %  turn_index == 5时，order值在[1 12]和[25 36]时左手反应
-    %                     （分别是Larynx区和Tongue区的前一半）
-    %                     order值在[13 24]和[37 48]时右手反应
-    %                     （分别是Larynx区和Tongue区的后一半）
-    if turn_index<=2
-        resp_hand=1; % 刺激左脑，用左手反应
-    elseif turn_index>2 && turn_index<=4
-        resp_hand=2; % 刺激右脑，用右手反应
-    elseif turn_index==5
-        if ordercode<=par_max*(1/4) %[1 12]
-            resp_hand=1; % 刺激左脑，用左手反应
-        elseif ordercode>par_max*(1/4) && ordercode<=par_max*(2/4) % [13 24]
-            resp_hand=2; % 刺激右脑，用右手反应
-        elseif ordercode>par_max*(2/4) && ordercode<=par_max*(3/4) % [25 36]
-            resp_hand=1; % 刺激左脑，用左手反应
-        elseif ordercode>par_max*(3/4) % [37 48]
-            resp_hand=2; % 刺激右脑，用右手反应
-        end
+        resp_hand=2; % Right hand
     end
     
     if resp_hand==1
-        lrTag='左脑，左手';
+        lrTag='左手';
     elseif resp_hand==2
-        lrTag='右脑，右手';
+        lrTag='右手';
     end
 
-    %% 被试按键顺序
+    %% 确定按键顺序
     if mod(par,2) % 余数为1，奇数
-        oddTag='(奇数编号)左键二声/t,右键一声/d';
+        oddTag='(奇数编号)左键二声/t，右键一声/d';
     else          % 余数为0，偶数
         oddTag='(偶数编号)左键一声/d，右键二声/t';
     end
     
     %% 练习时的被试编号，用于保持练习与实验反应手一致
     if mod(par,2) % 余数为1，奇数
-        if resp_hand==1 % 刺激左脑，用左手反应
-            practice_code=1; %左脑奇数 （这些所谓左右脑是在practice里的，那里左右脑用的还是古老的order编号，小于25左脑这样）
-        elseif resp_hand==2 % 刺激右脑，用右手反应
-            practice_code=25; %右脑奇数
+        if resp_hand==1 % 用左手反应
+            practice_code=1; %左手奇数 （这些所谓左右是在practice里的，那里左右用的还是古老的order编号，小于25左脑这样）
+        elseif resp_hand==2 % 用右手反应
+            practice_code=25; %右手奇数
         end
     else          % 余数为0，偶数
-        if resp_hand==1 % 刺激左脑，用左手反应
-            practice_code=2; %左脑偶数
-        elseif resp_hand==2 % 刺激右脑，用右手反应
-            practice_code=26; %右脑偶数
+        if resp_hand==1 % 用左手反应
+            practice_code=2; %左手偶数
+        elseif resp_hand==2 % 用右手反应
+            practice_code=26; %右手偶数
         end
     end
 
+    if ~is_test_turns && ~skip_practice
+        show_par_name=DATA(par).par_info.name;
+    else
+        show_par_name=[num2str(par),'测试姓名'];
+    end
+    
     uiwait(msgbox({['编号：',num2str(par)],...
     ['被试平衡序列编号：',num2str(ordercode)],...
-    ['姓名：',DATA(par).par_info.name],...
+    ['姓名：',show_par_name],...
     ['正式实验第几次：',num2str(turn)],...
-    ['TMS刺激部位：',Larynx_Tongue],...
-    ['TMS刺激半球和序列：',tms_MSG],...
+    ['电刺激类型：',tms_MSG],...
     ['被试按键次序：',oddTag],...
-    ['被试刺激靶点所在半球和反应手：',lrTag],...
+    ['被试反应手：',lrTag],...
     ['练习时的被试编号：',num2str(practice_code)]}));
 
     
@@ -183,27 +150,15 @@ function lbsCP2_TMSEXP_20201022(par,turn,TMSinten)
     %% 正式实验
     uiwait(msgbox({['编号：',num2str(par)],...
     ['被试平衡序列编号：',num2str(ordercode)],...
-    ['姓名：',DATA(par).par_info.name],...
+    ['姓名：',show_par_name],...
     ['正式实验第几次：',num2str(turn)],...
-    ['TMS刺激部位：',Larynx_Tongue],...
-    ['TMS刺激半球和序列：',tms_MSG],...
+    ['电刺激类型：',tms_MSG],...
     ['被试按键次序：',oddTag],...
-    ['被试刺激靶点所在半球和反应手：',lrTag],...
-    ['练习时的被试编号：',num2str(practice_code)]}));
+    ['被试反应手：',lrTag]}));
 
     % 施加TMS
-    uiwait(msgbox('请施加TBS刺激，施加完后按【确定】'));
+    uiwait(msgbox('电刺激就绪后按【确定】开始电刺激和实验。'));
     % 倒计时：
-    if turn_index==2 || turn_index==4
-        % cTBS
-        waitb=waitbar(0,'请让被试休息5分钟，并保持不说话和不动非反应手');
-        waitT=60*5;
-        for i=1:waitT,
-            waitbar(i/waitT,waitb);
-            WaitSecs(1);
-        end
-        close(waitb)
-    end
         
     TMSBEHAV_tic=tic;    
     for w_block=1:size(turn_mat,2)
