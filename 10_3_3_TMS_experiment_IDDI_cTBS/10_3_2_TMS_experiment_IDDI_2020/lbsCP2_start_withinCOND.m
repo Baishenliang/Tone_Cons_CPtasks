@@ -27,30 +27,6 @@ function lbsCP2_start_withinCOND(par_code_in,session,w_subj_cond_i,turn_index,TM
     %   Right iTBS   3
     %   Right cTBS   4
     %   Sham         5 
-    %  turn_index <=2 时，被试左手反应
-    %  2 < turn_index <= 4 时，被试右手反应
-    %  turn_index == 5时，order值在[1 12]和[25 36]时左手反应
-    %                     （分别是Larynx区和Tongue区的前一半）
-    %                     order值在[13 24]和[37 48]时右手反应
-    %                     （分别是Larynx区和Tongue区的后一半）
-%     load('input/blockmatrix.mat');
-%     par_max=max(cell2mat(output(2,:)));
-%     ordercode=bsliang_gainORDERnum(par_code);
-%     if turn_index<=2
-%         resp_hand=1; % 刺激左脑，用左手反应
-%     elseif turn_index>2 && turn_index<=4
-%         resp_hand=2; % 刺激右脑，用右手反应
-%     elseif turn_index==5
-%         if ordercode<=par_max*(1/4) %[1 12]
-%             resp_hand=1; % 刺激左脑，用左手反应
-%         elseif ordercode>par_max*(1/4) && ordercode<=par_max*(2/4) % [13 24]
-%             resp_hand=2; % 刺激右脑，用右手反应
-%         elseif ordercode>par_max*(2/4) && ordercode<=par_max*(3/4) % [25 36]
-%             resp_hand=1; % 刺激左脑，用左手反应
-%         elseif ordercode>par_max*(3/4) % [37 48]
-%             resp_hand=2; % 刺激右脑，用右手反应
-%         end
-%     end
     
     if isequal(session,'_def_range_')
         data_temp=DATA(par_code).def_range;
