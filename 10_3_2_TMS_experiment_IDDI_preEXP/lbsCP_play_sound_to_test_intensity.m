@@ -15,7 +15,7 @@
 % 2020年10月12日，要求65dB，k=sqrt(10^(65/10)/10^(X/10))
 % 2021年3月9日，要求-8dBSNR加SSN之后82dB，k=sqrt(10^(82/10)/10^(X/10))
 
-adjust_k=[0.6918*0.1349*0.3388*3.7584*0.5309*0.5957 0.7161*1.0233*0.1303*0.3388*3.5481*0.5309*0.5957]; 
+adjust_k=[0.5*0.5957*1.1220 0.5*0.5957*1.1220]; 
 
 %save diti_adjust_soundint_k adjust_k
 save('soundint_k','adjust_k');
@@ -69,7 +69,7 @@ end
 %加入噪声：
 
 addnoise=1; %是否加入噪声？
-SNR=-16; %原始噪声的SNR是-4，但是真正实验可能用到的最大SNR是-8，根据听力健康的标准，加入最大SNR时应当不超过LApeak82dB
+SNR=-12; %原始噪声的SNR是-4，但是真正实验可能用到的最大SNR是-8，根据听力健康的标准，加入最大SNR时应当不超过LApeak82dB
 
 [noise_bg,fs_noise_bg]=audioread('input\T_m4dB_SSN.wav');
 
