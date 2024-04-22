@@ -3,7 +3,7 @@
 clear all
 close all
 par=input('请输入被试编号：');
-turn=input('请输入正式实验序号（第1 2 3 4 5次）：');
+turn=input('请输入正式实验序号（第1 2 3次）：');
 TMSint=40;%input('请输入TMS刺激强度：');
 
 % 读取被试左右脑信息

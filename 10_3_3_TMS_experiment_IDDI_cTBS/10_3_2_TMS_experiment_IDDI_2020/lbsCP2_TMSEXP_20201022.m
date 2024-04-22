@@ -6,7 +6,7 @@ function lbsCP2_TMSEXP_20201022(par,turn,TMSinten)
     % TMSinten: intensity of TMS stimulation
     
     is_test_turns=0; % 1时不进行练习也不开始实验
-    skip_practice=1; % 1时跳过练习
+    skip_practice=0; % 1时跳过练习
     
     %% 导入数据，确定turn以及block的顺序
     DATA=lbsCP2_loadDATA();

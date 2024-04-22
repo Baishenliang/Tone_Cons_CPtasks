@@ -14,7 +14,7 @@
 
 % 2020年10月12日，要求65dB，k=sqrt(10^(65/10)/10^(X/10))
 
-adjust_k=[0.6918 0.7161*1.0233]; 
+adjust_k=[[0.5*0.5957*1.1220 0.5*0.5957*1.1220]]; 
 
 %save diti_adjust_soundint_k adjust_k
 save('soundint_k','adjust_k');
