@@ -41,12 +41,17 @@ function bsliang_indSNRandTEST_Main(par_code_in)
         disp(['Automatic calculated individual tone SNR K=',num2str(SNRtone_k),'; phon SNR K =',num2str(SNRphon_k)]);
         disp(['PLEASE CHECK: RMS raw noise = ',num2str(rms(noisekk)),' RMS raw signal = ', num2str(rms(signalkk)),' SNR = 10*log10((rms(k*signal)/rms(noise))^2)']);
         
-        DATA(par_code_in).def_range.indSNRs_k =[SNRtone_k SNRphon_k];
-        DATA(par_code_in).practice.indSNRs_k = [SNRtone_k SNRphon_k SNRtone_k SNRphon_k];
-        DATA(par_code_in).Id_Di.indSNRs_k =    [SNRtone_k SNRphon_k SNRtone_k SNRphon_k SNRtone_k SNRphon_k SNRtone_k SNRphon_k];
-        
-        save DATA DATA
-        clear DATA
+        % Check if variable DATA exists
+        if exist('DATA', 'var')
+            DATA(par_code_in).def_range.indSNRs_k =[SNRtone_k SNRphon_k];
+            DATA(par_code_in).practice.indSNRs_k = [SNRtone_k SNRphon_k SNRtone_k SNRphon_k];
+            DATA(par_code_in).Id_Di.indSNRs_k =    [SNRtone_k SNRphon_k SNRtone_k SNRphon_k SNRtone_k SNRphon_k SNRtone_k SNRphon_k];
+
+            save DATA DATA
+            clear DATA
+        else
+            warndlg('请加载DATA文件', '警告'); % Display warning message box
+        end
         
         confirm_tic=tic;
         % BSLiang 20201011 新版的不要求被试第一次来就做practice了
