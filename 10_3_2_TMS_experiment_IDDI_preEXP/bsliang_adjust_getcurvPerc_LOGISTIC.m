@@ -43,7 +43,7 @@ function xvars=bsliang_adjust_getcurvPerc_LOGISTIC(stim_mat,no_steps,raw,TITLE,p
         Xb=input('请输入Xb(单位：step)：');
     end
     plot([Xa Xb],[bsliang(paras,Xa) bsliang(paras,Xb)],'m+');
-    saveas(figure(1),['./result_plots/RANGE_No_',num2str(par_code),'_',strrep(strrep(strrep(datestr(now),':','_'),' ','_'),'-','_'),'.png']);
+    saveas(gcf,['./result_plots/RANGE_No_',num2str(par_code),'_',strrep(strrep(strrep(datestr(now),':','_'),' ','_'),'-','_'),'.png']);
     close all
     
     %% 转换为百分位
